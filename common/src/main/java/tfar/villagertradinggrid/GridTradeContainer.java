@@ -2,7 +2,6 @@ package tfar.villagertradinggrid;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.Merchant;
@@ -11,6 +10,7 @@ import net.minecraft.world.item.trading.MerchantOffers;
 
 public class GridTradeContainer implements Container {
 
+    private int futureXp;
     private final Merchant merchant;
     private final int size;
     private final NonNullList<ItemStack> items;
@@ -96,4 +96,9 @@ public class GridTradeContainer implements Container {
     public void clearContent() {
 
     }
+
+    public int getFutureXp() {
+        return this.futureXp;
+    }
+
 }
