@@ -14,6 +14,7 @@ import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import org.jetbrains.annotations.Nullable;
@@ -29,6 +30,9 @@ public class VillagerTradingGridForge {
 
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::register);
+        if (FMLEnvironment.dist.isClient()) {
+            ModClientForge.init(bus);
+        }
         MinecraftForge.EVENT_BUS.addListener(this::replaceMenu);
         // Use Forge to bootstrap the Common mod.
         VillagerTradingGrid.init();
