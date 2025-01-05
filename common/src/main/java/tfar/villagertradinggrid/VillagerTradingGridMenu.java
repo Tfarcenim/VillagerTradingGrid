@@ -10,9 +10,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.trading.Merchant;
-import tfar.villagertradinggrid.platform.Services;
+import net.minecraft.world.item.trading.MerchantOffers;
 
 public class VillagerTradingGridMenu extends AbstractContainerMenu {
     private final Merchant merchant;
@@ -53,47 +52,24 @@ public class VillagerTradingGridMenu extends AbstractContainerMenu {
             this.addSlot(new Slot(inventory, i, 108 + i * 18, 142));
         }
 
-        for(int k = 0; k < 4; ++k) {
-            final EquipmentSlot equipmentslot = SLOT_IDS[k];
-            this.addSlot(new Slot(inventory, 39 - k, 8, 8 + k * 18) {
-                @Override
-                public void setByPlayer(ItemStack stack) {
-                    InventoryMenu.onEquipItem(inventory.player, equipmentslot, stack, this.getItem());
-                    super.setByPlayer(stack);
-                }
+        this.addSlot(new EquipmentInventorySlot(inventory, 39, 152, 18,inventory.player,SLOT_IDS[0]));//head
+        this.addSlot(new EquipmentInventorySlot(inventory, 39 - 1, 152, 45,inventory.player,SLOT_IDS[1]));
 
-                /**
-                 * Returns the maximum stack size for a given slot (usually the same as getInventoryStackLimit(), but 1 in
-                 * the case of armor slots)
-                 */
-                @Override
-                public int getMaxStackSize() {
-                    return 1;
-                }
+        this.addSlot(new EquipmentInventorySlot(inventory, 39 - 2, 206, 18,inventory.player,SLOT_IDS[2]));
+        this.addSlot(new EquipmentInventorySlot(inventory, 39 - 3, 206, 45,inventory.player,SLOT_IDS[3]));//feet
 
-                /**
-                 * Check if the stack is allowed to be placed in this slot, used for armor slots as well as furnace fuel.
-                 */
-                @Override
-                public boolean mayPlace(ItemStack stack) {
-                    return Services.PLATFORM.canEquip(stack,equipmentslot, inventory.player);
-                }
 
-                /**
-                 * Return whether this slot's stack can be taken from this slot.
-                 */
-                @Override
-                public boolean mayPickup(Player p_39744_) {
-                    ItemStack itemstack = this.getItem();
-                    return (itemstack.isEmpty() || p_39744_.isCreative() || !EnchantmentHelper.hasBindingCurse(itemstack)) && super.mayPickup(p_39744_);
-                }
+        this.addSlot(new Slot(inventory, 40, 133, 32) {
+            public void setByPlayer(ItemStack stack) {
+                InventoryMenu.onEquipItem(inventory.player, EquipmentSlot.OFFHAND, stack, this.getItem());
+                super.setByPlayer(stack);
+            }
 
-                @Override
-                public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.TEXTURE_EMPTY_SLOTS[equipmentslot.getIndex()]);
-                }
-            });
-        }
+            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+                return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
+            }
+        });
+
     }
 
     public int getTraderXp() {
@@ -150,5 +126,9 @@ public class VillagerTradingGridMenu extends AbstractContainerMenu {
 
     public boolean showProgressBar() {
         return this.showProgressBar;
+    }
+
+    public void setClientsideOffers(MerchantOffers merchantOffers) {
+        this.merchant.overrideOffers(merchantOffers);
     }
 }
