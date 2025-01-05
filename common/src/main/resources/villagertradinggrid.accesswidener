@@ -9,3 +9,8 @@ accessible field net/minecraft/world/inventory/MerchantMenu trader Lnet/minecraf
 
 accessible field net/minecraft/world/inventory/InventoryMenu TEXTURE_EMPTY_SLOTS [Lnet/minecraft/resources/ResourceLocation;
 accessible method net/minecraft/world/inventory/InventoryMenu onEquipItem (Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/entity/EquipmentSlot;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;)V
+
+accessible method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen renderSlot (Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/inventory/Slot;)V
+extendable method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen renderSlot (Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/inventory/Slot;)V
+
+extendable method net/minecraft/world/inventory/AbstractContainerMenu doClick (IILnet/minecraft/world/inventory/ClickType;Lnet/minecraft/world/entity/player/Player;)V

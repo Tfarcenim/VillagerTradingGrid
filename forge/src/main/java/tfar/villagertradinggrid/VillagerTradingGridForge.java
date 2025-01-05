@@ -49,5 +49,4 @@ public class VillagerTradingGridForge {
             event.register(Registries.MENU, VillagerTradingGrid.id("menu"), () -> Init.VILLAGER_TRADING_GRID);
         }
     }
-
 }

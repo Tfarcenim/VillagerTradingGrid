@@ -21,7 +21,8 @@ public class GridTradeContainer implements Container {
         MerchantOffers offers = merchant.getOffers();
         int i = 0;
         for (MerchantOffer offer : offers) {
-            setItem(i++,offer.getResult().copy());
+            ItemStack copy = offer.getResult().copy();
+            setItem(i++,copy);
             if (i >= slots) break;
         }
     }
@@ -44,13 +45,15 @@ public class GridTradeContainer implements Container {
 
     @Override
     public ItemStack removeItem(int slot, int i1) {
-        return getItem(slot).copy();
-      //  ItemStack stack = ContainerHelper.removeItem(this.items, slot, i1);
-      //  if (!stack.isEmpty()) {
-      //      this.setChanged();
-      //  }
-       /// return stack;
+        ItemStack copy = getItem(slot).copy();
+        return copy;
     }
+
+    @Override
+    public boolean canPlaceItem(int slot, ItemStack stack) {
+        return false;
+    }
+
 
     @Override
     public ItemStack removeItemNoUpdate(int slot) {

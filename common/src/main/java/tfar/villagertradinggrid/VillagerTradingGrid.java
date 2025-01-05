@@ -43,8 +43,7 @@ public class VillagerTradingGrid {
         if (optionalint.isPresent()) {
             MerchantOffers merchantoffers = merchant.getOffers();
             if (!merchantoffers.isEmpty()) {
-                Services.PLATFORM.sendToClient(
-                        new S2CTradingGridPacket(optionalint.getAsInt(), merchantoffers, pLevel, merchant.getVillagerXp(), merchant.showProgressBar(), merchant.canRestock()),(ServerPlayer) pPlayer);
+                pPlayer.sendMerchantOffers(optionalint.getAsInt(), merchantoffers, pLevel, merchant.getVillagerXp(), merchant.showProgressBar(), merchant.canRestock());
             }
         }
     }

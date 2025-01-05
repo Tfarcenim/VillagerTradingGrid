@@ -8,8 +8,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.npc.VillagerData;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.ResultSlot;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.trading.MerchantOffer;
+import tfar.villagertradinggrid.TradeSlot;
 import tfar.villagertradinggrid.VillagerTradingGrid;
 import tfar.villagertradinggrid.VillagerTradingGridMenu;
+
+import java.util.List;
 
 public class VillagerTradingGridScreen extends AbstractContainerScreen<VillagerTradingGridMenu> {
     private static final ResourceLocation VILLAGER_LOCATION = VillagerTradingGrid.id("textures/gui/villager3.png");
@@ -29,6 +36,21 @@ public class VillagerTradingGridScreen extends AbstractContainerScreen<VillagerT
         InventoryScreen.renderEntityInInventoryFollowsMouse(pGuiGraphics, this.leftPos + 188, this.topPos + 57, 20, this.leftPos + 188 - pMouseX, this.topPos + 57 - 30 - pMouseY, this.minecraft.player);
     }
 
+    @Override
+    public void renderSlot(GuiGraphics guiGraphics, Slot slot) {
+        super.renderSlot(guiGraphics, slot);
+        if (slot instanceof TradeSlot tradeSlot) {
+            ItemStack stack = slot.getItem();
+            if (!stack.isEmpty()) {
+                MerchantOffer offer = tradeSlot.getBoundOffer();
+                if (offer != null && offer.isOutOfStock()) {
+                    int x = slot.x;
+                    int y = slot.y;
+                    guiGraphics.blit(VILLAGER_LOCATION, x, y, 300, 318, 3, 15, 15, 512, 256);
+                }
+            }
+        }
+    }
 
     public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         this.renderBackground(pGuiGraphics);
@@ -62,6 +84,11 @@ public class VillagerTradingGridScreen extends AbstractContainerScreen<VillagerT
         }
     }
 
+    @Override
+    protected List<Component> getTooltipFromContainerItem(ItemStack $$0) {
+        return super.getTooltipFromContainerItem($$0);
+    }
+
     private static final Component LEVEL_SEPARATOR = Component.literal(" - ");
 
     @Override
@@ -77,5 +104,9 @@ public class VillagerTradingGridScreen extends AbstractContainerScreen<VillagerT
         } else {
             pGuiGraphics.drawString(this.font, this.title, 49 + this.imageWidth / 2 - this.font.width(this.title) / 2, 6, 0x404040, false);
         }
+    }
+
+    public Slot getHoveredSlot() {
+        return hoveredSlot;
     }
 }

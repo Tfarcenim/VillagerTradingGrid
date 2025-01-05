@@ -7,6 +7,7 @@ import net.minecraft.world.entity.npc.ClientSideMerchant;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -23,6 +24,7 @@ public class VillagerTradingGridMenu extends AbstractContainerMenu {
     private int merchantLevel;
     private boolean showProgressBar;
     private boolean canRestock;
+    int rowOffset;
 
     //from InventoryMenu
     private static final EquipmentSlot[] SLOT_IDS = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
@@ -37,7 +39,7 @@ public class VillagerTradingGridMenu extends AbstractContainerMenu {
         for (int y = 0; y < ROWS;y++) {
            for (int x = 0; x < COL;x++) {
                int i = x + y * COL;
-               addSlot(new Slot(tradeContainer,i,x * 18 + 5,y * 18 + 18));
+               addSlot(new TradeSlot(tradeContainer,i,x * 18 + 5,y * 18 + 18, inventory.player, merchant,this));
            }
         }
 
@@ -70,6 +72,11 @@ public class VillagerTradingGridMenu extends AbstractContainerMenu {
             }
         });
 
+    }
+
+    @Override
+    public void doClick(int $$0, int $$1, ClickType $$2, Player $$3) {
+        super.doClick($$0, $$1, $$2, $$3);
     }
 
     public int getTraderXp() {
@@ -130,5 +137,9 @@ public class VillagerTradingGridMenu extends AbstractContainerMenu {
 
     public void setClientsideOffers(MerchantOffers merchantOffers) {
         this.merchant.overrideOffers(merchantOffers);
+    }
+
+    public MerchantOffers getOffers() {
+        return merchant.getOffers();
     }
 }
